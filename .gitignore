@@ -27,10 +27,16 @@ build/
 next-env.d.ts
 
 # Foundry
-contracts/out/
-contracts/cache/
-contracts/broadcast/
-contracts/lib/
+packages/contracts/out/
+packages/contracts/cache/
+packages/contracts/broadcast/
+packages/contracts/lib/
+
+# Skills (reinstall from skills-lock.json)
+.agents/
+
+# pnpm
+.pnpm-store/
 
 # OS / editor
 .DS_Store

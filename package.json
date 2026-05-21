@@ -1,0 +1,24 @@
+{
+  "name": "basepulse",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Utility MiniApp for Base ecosystem: portfolio + gas + onchain score.",
+  "license": "MIT",
+  "packageManager": "pnpm@11.2.2",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "pnpm --filter @basepulse/web dev",
+    "build": "pnpm -r build",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "pnpm -r lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md,json,yaml,yml}\" --ignore-path .gitignore",
+    "format:check": "prettier --check \"**/*.{ts,tsx,md,json,yaml,yml}\" --ignore-path .gitignore"
+  },
+  "devDependencies": {
+    "typescript": "5.6.3",
+    "@types/node": "22.9.0",
+    "prettier": "3.3.3"
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "skills": {
+    "adding-builder-codes": {
+      "source": "base/skills",
+      "sourceType": "github",
+      "skillPath": "skills/adding-builder-codes/SKILL.md",
+      "computedHash": "0bcaa8f82216828720f4f4b2ba3d4895aceabbfa65837b87a1c269ffe554fb75"
+    },
+    "building-with-base-account": {
+      "source": "base/skills",
+      "sourceType": "github",
+      "skillPath": "skills/building-with-base-account/SKILL.md",
+      "computedHash": "dfd6a333c4d5b7a366a8398b562c35ee556c73101bc7863109f0c4a97de611ed"
+    },
+    "connecting-to-base-network": {
+      "source": "base/skills",
+      "sourceType": "github",
+      "skillPath": "skills/connecting-to-base-network/SKILL.md",
+      "computedHash": "ec7401d3b6513492e3d32f783bb94dfc4faca7bfab82537a86ab498fb77ee797"
+    },
+    "convert-farcaster-miniapp-to-app": {
+      "source": "base/skills",
+      "sourceType": "github",
+      "skillPath": "skills/convert-farcaster-miniapp-to-app/SKILL.md",
+      "computedHash": "addbeaf090f3fb93b7e1ead49eb2cfd3756f9ee7f3a0dafdb10581b7155da27f"
+    },
+    "converting-minikit-to-farcaster": {
+      "source": "base/skills",
+      "sourceType": "github",
+      "skillPath": "skills/converting-minikit-to-farcaster/SKILL.md",
+      "computedHash": "16d5cfb31acc3140fb388e6c4d90499f53bb6ca47d33fd2147322683fab3fe49"
+    },
+    "deploying-contracts-on-base": {
+      "source": "base/skills",
+      "sourceType": "github",
+      "skillPath": "skills/deploying-contracts-on-base/SKILL.md",
+      "computedHash": "86b3bda0b762374bc1e59c6949942039891c440656a83c9601b1ea02c42d7f92"
+    },
+    "migrating-an-onchainkit-app": {
+      "source": "base/skills",
+      "sourceType": "github",
+      "skillPath": "skills/migrating-an-onchainkit-app/SKILL.md",
+      "computedHash": "08ee1f14dfe72aa62f0f1e1219ebea04cf6126f64324472937067db5cb5dcb65"
+    },
+    "registering-agent-base-dev": {
+      "source": "base/skills",
+      "sourceType": "github",
+      "skillPath": "skills/registering-agent-base-dev/SKILL.md",
+      "computedHash": "c0d31e44ed3d32d6d3711c11f69b07dc07ecf5b3e3a2d841f092b0670a0c8b23"
+    },
+    "running-a-base-node": {
+      "source": "base/skills",
+      "sourceType": "github",
+      "skillPath": "skills/running-a-base-node/SKILL.md",
+      "computedHash": "400a4f003207c018a6f8343d113e6ad4fe1ee3162a1164b9477a90001ebc2037"
+    },
+    "skill-creator": {
+      "source": "base/skills",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/skill-creator/SKILL.md",
+      "computedHash": "bb3a8a0b52c84eff06a0f62b8a844d522e952be1d3a1ad438972b64b0758ed4e"
+    }
+  }
+}
