@@ -30,34 +30,35 @@ A utility MiniApp for Base ecosystem users that combines portfolio tracking, gas
 
 ## Phase plan (8 weeks, 5–10 hrs/week)
 
-### Phase 0 — Identity & infrastructure (Week 1)
+### Phase 0 — Identity & infrastructure (Week 1) — **CLOSED 2026-05-22 (technical)**
 **Goal**: be eligible for Builder Rewards from day 1 of building.
-- [ ] `nvm install 22 && nvm use 22` (current VPS has v20).
-- [ ] Install Foundry (`foundryup`) and verify `forge --version`.
-- [ ] Install Redis locally on VPS, confirm `redis-cli ping`.
-- [ ] Register Basename (`*.base.eth`) on farming wallet.
-- [ ] Create talent.app profile; connect wallet + GitHub + Farcaster + X.
-- [ ] Complete Human Checkmark.
-- [ ] Record baseline Builder Score in `docs/builder-score-log.md`.
-- [ ] Validate `npx skills add base/skills`. If it fails, document the actual install path (clone repo, copy to `.claude/skills/`).
-- [ ] Initialize repo with `CLAUDE.md`, `ROADMAP.md`, `.gitignore`, `.env.example`, `LICENSE` (MIT). First commit.
-- [ ] Create Vercel project, link to repo.
-- [ ] Reserve domain (basepulse.app / basepulse.xyz / fallback).
+- [x] `nvm install 22 && nvm use 22` (was v20 → v22.22.3).
+- [x] Install Foundry (`foundryup`) and verify `forge --version` (1.7.1).
+- [x] Install Redis locally on VPS, confirm `redis-cli ping` (7.0.15).
+- [ ] Register Basename (`*.base.eth`) on farming wallet. *(human pending)*
+- [ ] Create talent.app profile; connect wallet + GitHub + Farcaster + X. *(human pending)*
+- [ ] Complete Human Checkmark. *(human pending)*
+- [ ] Record baseline Builder Score in `docs/builder-score-log.md`. *(human pending)*
+- [x] Validate `npx skills add base/skills` — 10 skills installed to `.agents/skills/`, `skills-lock.json` committed.
+- [x] Initialize repo with `CLAUDE.md`, `ROADMAP.md`, `.gitignore`, `.env.example`, `LICENSE` (MIT). First commit.
+- [ ] Create Vercel project, link to repo. *(deferred until GitHub push)*
+- [ ] Reserve domain (basepulse.app / basepulse.xyz / fallback). *(human pending)*
 
 **Verification**: Builder Score visible on talent.app, identity links confirmed, repo pushed, `forge`/`redis-cli`/`node -v` all green.
+**Status**: technical scaffold ✅. Identity + hosting deferred to be done in parallel with Phase 1+.
 
-### Phase 1 — Frontend foundation (Week 2)
+### Phase 1 — Frontend foundation (Week 2) — **CLOSED 2026-05-22 (local)**
 **Goal**: shippable shell with wallet connection and routing.
-- [ ] Next.js 14 scaffold, strict TS, ESLint + Prettier.
-- [ ] Tailwind + shadcn/ui configured.
-- [ ] wagmi config for Base mainnet + Base Sepolia.
-- [ ] Base Account SDK integration.
-- [ ] SIWE flow with server-side session (NextAuth or custom).
-- [ ] Layout: header (wallet connect), sidebar (route nav).
-- [ ] Placeholder routes: `/portfolio`, `/gas`, `/score`.
-- [ ] Vercel preview deploy.
+- [x] Next.js **16** scaffold, strict TS, ESLint. *(version bumped per ADR-008)*
+- [x] Tailwind configured. *(shadcn/ui deferred until first component need)*
+- [x] wagmi config for Base mainnet + Base Sepolia.
+- [x] Base Account SDK integration (`@base-org/account` 2.5.6).
+- [x] **SIWB** flow with server-side session via iron-session (per ADR-001 + ADR-005).
+- [x] Layout: header (wallet connect), sidebar (route nav).
+- [x] Placeholder routes: `/portfolio`, `/gas`, `/score`.
+- [ ] Vercel preview deploy. *(deferred until GitHub push)*
 
-**Verification**: connect wallet, SIWE sign-in, authenticated state persists across routes.
+**Verification**: build clean, all routes 200, `/api/auth/*` endpoints return expected shapes, COOP header set. End-to-end SIWB with a real wallet popup deferred to first hosted deploy.
 
 ### Phase 2 — Portfolio module (Week 2–3)
 **Goal**: real data for connected wallet.

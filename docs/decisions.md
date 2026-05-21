@@ -124,3 +124,30 @@ No additional global state library in v1. wagmi handles wallet state, TanStack Q
 - Smaller, cleaner repo.
 - Reproducibility via lockfile, same model as `node_modules` + `pnpm-lock.yaml`.
 - If `skills` CLI breaks the lockfile format, we may need to pin a specific CLI version.
+
+---
+
+## ADR-008 — Pin to 2026-05 ecosystem versions, not 2024 versions
+**Date**: 2026-05-22
+**Status**: Accepted
+
+**Context**
+The initial Phase 1 plan pinned versions that were current ~2024: Next 14, React 18, wagmi 2.x, viem 2.21, `@base-org/account` 1.0.4. The npm registry rejected `@base-org/account@1.0.4` — current is 2.5.6. The whole stack has moved forward.
+
+**Decision**
+Pin to current 2026-05 versions:
+- `next@16.2.6` (Turbopack default, React 19 default)
+- `react@19.2.6`, `react-dom@19.2.6`
+- `wagmi@3.6.15` (requires TS ≥ 5.7.3)
+- `viem@2.50.4`
+- `@base-org/account@2.5.6`, `@base-org/account-ui@1.0.1`
+- `@tanstack/react-query@5.59.20`
+- `iron-session@8.0.4`
+- `typescript@5.7.3`
+
+**Consequences**
+- Next 16 made `cookies()` async — `await cookies()` everywhere.
+- React 19 type changes — `@types/react@19.x` required.
+- `SignInWithBaseButton` v1.x dropped `size` prop.
+- Future bumps should be deliberate; pin exact versions, no `^` ranges, document changes here.
+

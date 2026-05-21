@@ -27,13 +27,15 @@ Template (copy + fill at end of each week):
 - Next week focus: <one or two priorities>
 ```
 
-### Week 0 — 2026-05-22 (bootstrap)
+### Week 0 — 2026-05-22 (bootstrap + Phase 1 done same day)
 - Score: not yet recorded
 - Activities this week:
   - [x] Repo bootstrapped with CLAUDE.md, ROADMAP.md, docs/
   - [x] Environment validated (Node 22, Foundry, Redis)
   - [x] 10 Base skills installed
+  - [x] Phase 1 (Next.js 16 shell + SIWB auth) closed locally — 3 commits
   - [ ] Basename registration — pending
   - [ ] talent.app profile creation — pending
   - [ ] Human Checkmark — pending
-- Next week focus: complete identity setup, record baseline score, start Phase 1 frontend shell.
+- Commits this week: `132942d`, `6cfc842`, `3b1f97a`
+- Next week focus: identity setup (Basename + talent.app + Human Checkmark), Phase 2 (portfolio + VPS cache + Alchemy), push to GitHub + Vercel preview.
