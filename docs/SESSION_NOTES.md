@@ -83,3 +83,49 @@ Format: one section per Phase, dated. Newest at the bottom.
 - Migrate `nonce-store.ts` from in-memory Map to Redis (so it survives reloads and scales across instances).
 - Stand up the VPS-side Node + Redis cache layer.
 - Wire Alchemy token balances behind a Next.js Route Handler that proxies the VPS.
+
+---
+
+## 2026-05-22 — Phase 2 (Portfolio + VPS cache)
+
+**Goal**: real (or mock) portfolio data behind a cache, end-to-end through the VPS.
+
+**What got built**
+- New workspace `services/cache/` (Fastify 5.8.5, ioredis 5.10.1, tsx for dev).
+  - `GET /health` (public) returns `{ok, mock, redis}`.
+  - `GET /v1/tokens/:chainId/:address` requires `x-internal-token` header, returns `{tokens, fetchedAt}` with `x-cache: HIT|MISS`.
+  - Alchemy integration with mock fallback when `ALCHEMY_API_KEY` is empty.
+  - Redis TTL: 300 s for token balances.
+- `apps/web/lib/redis.ts`: global ioredis singleton (avoids reconnect storms in dev).
+- `apps/web/lib/nonce-store.ts`: migrated to Redis (`siwb:nonce:*`, 5 min TTL).
+- `apps/web/lib/cache-client.ts`: typed client to the cache service.
+- `apps/web/lib/format.ts`: `formatBalance` for BigInt → human string.
+- `apps/web/app/api/portfolio/route.ts`: session-gated proxy.
+- `apps/web/app/portfolio/page.tsx`: client component using TanStack Query, skeleton + refresh button.
+
+**Decisions made on the fly**
+- Added third workspace dir `services/*` to `pnpm-workspace.yaml`.
+- `INTERNAL_API_TOKEN` is a single shared secret (web ↔ cache). Generated with `openssl rand -hex 24`. Both `.env.local` and `services/cache/.env` hold the same value. Production deploy will swap to a per-environment secret.
+- Cache service log level: `debug` in dev, `info` in prod. Default port 4000 (configurable via `CACHE_PORT`).
+- Mock data covers USDC, WETH, AERO with realistic Base mainnet addresses, so the UI looks alive without Alchemy.
+- `redis-cli` confirms keys land where expected (`tokens:8453:0x…`, `siwb:nonce:…`).
+- `pnpm-workspace.yaml` got a couple of `allowBuilds` entries (`esbuild`, `sharp`, `unrs-resolver`) — pnpm 11's new safer default.
+
+**Commits**
+- `fc7727a` feat(phase-2): portfolio module with VPS cache service + Redis
+
+**Verification** ✅
+- `pnpm typecheck` + `pnpm build` clean (9 routes including `/api/portfolio`).
+- Cache service `/health` → `mock=true`, `redis=ready`.
+- Unauthorized cache request → 401.
+- Authorized request → 200 with `x-cache: MISS` then `HIT` on second call (≤ 300 s).
+- `/api/portfolio` returns 401 without session, would proxy with one.
+- Page `/portfolio` renders 200 (skeleton/error states wired).
+
+**NOT verified (needs browser + real wallet)**
+- Logged-in `/portfolio` end-to-end. Same blocker as Phase 1 — needs SIWB popup completion in a real browser.
+
+**Pending for Phase 2.5 (subgraphs)**
+- Aerodrome positions query.
+- Morpho lending positions query.
+- USD valuations (Alchemy `getTokenPrices` or DeFiLlama as fallback).

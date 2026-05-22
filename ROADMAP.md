@@ -60,15 +60,15 @@ A utility MiniApp for Base ecosystem users that combines portfolio tracking, gas
 
 **Verification**: build clean, all routes 200, `/api/auth/*` endpoints return expected shapes, COOP header set. End-to-end SIWB with a real wallet popup deferred to first hosted deploy.
 
-### Phase 2 — Portfolio module (Week 2–3)
+### Phase 2 — Portfolio module (Week 2–3) — **CLOSED 2026-05-22 (token balances)**
 **Goal**: real data for connected wallet.
-- [ ] VPS backend: Alchemy token balances endpoint (Redis TTL 5 min).
-- [ ] Subgraph queries: Aerodrome positions.
-- [ ] Subgraph queries: Morpho / Aave lending positions.
-- [ ] UI: tokens table, positions cards, total USD value.
-- [ ] Loading states + error boundaries.
+- [x] VPS backend: Alchemy token balances endpoint (Redis TTL 5 min) — Fastify cache service on :4000 with mock fallback.
+- [ ] Subgraph queries: Aerodrome positions. *(Phase 2.5)*
+- [ ] Subgraph queries: Morpho / Aave lending positions. *(Phase 2.5)*
+- [x] UI: tokens table with skeleton + refresh; total USD value deferred until prices integration.
+- [x] Loading states + error boundaries.
 
-**Verification**: real Base wallet → accurate portfolio shown.
+**Verification**: build clean, `/health` returns mock=true & redis ready, cache MISS→HIT confirmed via header, `/api/portfolio` session-gated. Real-wallet visual check deferred to first hosted preview.
 
 ### Phase 3 — Gas tracker (Week 3)
 **Goal**: actionable gas recommendations.
