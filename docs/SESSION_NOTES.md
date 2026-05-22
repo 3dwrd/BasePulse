@@ -6,6 +6,74 @@ Format: one section per Phase, dated. Newest at the bottom.
 
 ---
 
+## 🎯 Next session bootstrap — read this first
+
+**You're picking up after Phase 2 was closed. Phase 3 = Gas tracker.**
+
+### Read these in order (5 min)
+1. `CLAUDE.md` — hard rules, stack, RPC discipline.
+2. `ROADMAP.md` — find "Phase 3 — Gas tracker (Week 3)". That's the goal.
+3. `docs/decisions.md` — ADR-001 through ADR-008 (in particular ADR-003 cache on VPS, ADR-004 Next routes proxy cache).
+4. This file — scroll to the bottom for the latest Phase 2 entry; the pattern for Phase 3 mirrors it.
+
+### Current repo state (after commit `6d0c0fd`)
+- `apps/web/` Next.js 16 + wagmi 3 + SIWB working, builds clean, port 3200 in local dev.
+- `services/cache/` Fastify on port 4000 with Redis-backed token cache, mock data when `ALCHEMY_API_KEY` is empty.
+- 6 commits on `main`. No remote yet (GitHub push pending — human task).
+- `.env.local` and `services/cache/.env` exist locally with a shared `INTERNAL_API_TOKEN` (not committed).
+
+### Environment quick-check (run before touching code)
+```bash
+source ~/.nvm/nvm.sh && nvm use 22 >/dev/null
+node -v        # v22.22.3
+pnpm -v        # 11.2.2
+forge --version | head -1   # forge Version: 1.7.1
+redis-cli ping              # PONG
+cd /root/Proyectos/BasePulse && git log --oneline | head -6
+```
+
+If `forge` is missing in a fresh shell: `export PATH="$HOME/.foundry/bin:$PATH"` (already in `~/.bashrc` and `~/.profile`).
+
+### Phase 3 — Gas tracker: starting plan
+Goal from ROADMAP: 7-day Base gas history + percentile-based "good time to transact" signal on `/gas`.
+
+**Suggested sub-fases** (propose to user, get OK before coding):
+1. **3.1 Cache service**: new endpoint `GET /v1/gas/:chainId/current` (CDP RPC `eth_gasPrice`, TTL 15s). New endpoint `GET /v1/gas/:chainId/history` (returns 7d series, TTL 60s).
+2. **3.2 Background sampler**: small node script (or Fastify scheduled job using `setInterval`) that snapshots gas every 60s and pushes to a Redis sorted set `gas:<chainId>:samples` (score = unix ms, value = gwei). Trim to 7 days.
+3. **3.3 Recommendation engine**: function that classifies current gas vs. 7d distribution (p25/p50/p75) → `low | normal | high`.
+4. **3.4 Frontend**: `/gas` page with a sparkline (use `recharts` 2.x or hand-rolled SVG — recharts is heavier, SVG is fine for a single chart). Recommendation badge.
+
+**Open questions for the user to confirm:**
+- Q1: CDP RPC URL — does the user have a CDP account / API key, or should we default to the public Base RPC (`https://mainnet.base.org`) until they set up CDP?
+- Q2: Sparkline lib — hand-rolled SVG vs `recharts`. Recommend SVG for one chart (no bundle bloat).
+- Q3: Background sampler hosted as a Fastify scheduled job inside `services/cache` (simpler, one process) vs separate `services/sampler` workspace (cleaner separation). Recommend **embedded in cache** for v1.
+
+### Hard rules to remember (these caught us earlier)
+- Next 16 `cookies()` is **async** — always `await cookies()`.
+- Base Account SDK requires `window` — wrap any usage in `useEffect` / mount-gate in client components.
+- `SIWE_SESSION_SECRET` guard must run at **request time**, not at module load (breaks `next build` otherwise).
+- `pnpm-workspace.yaml` has an `allowBuilds` block — if a new dep needs a postinstall, add it there.
+- Port 3000 is occupied by docker, 3100 by python. **Use 3200 for web, 4000 for cache.**
+
+### Commit cadence (proven pattern)
+1. Plan → user OK.
+2. Implement → typecheck → build → start servers → curl probe → kill servers.
+3. `feat(phase-N): ...` commit with verification summary in body.
+4. Update `docs/SESSION_NOTES.md` + `ROADMAP.md` checkmarks + `docs/builder-score-log.md` week entry.
+5. `docs: phase N session notes + roadmap checkmarks` commit.
+
+### What the human is supposed to do in parallel (don't block on it)
+- Register Basename on farming wallet (https://base.org/names).
+- Create talent.app profile, link wallet + GitHub + Farcaster + X.
+- Complete Human Checkmark.
+- Record baseline Builder Score in `docs/builder-score-log.md`.
+- Get Alchemy API key (free tier) → `apps/web/.env.local` and `services/cache/.env` as `ALCHEMY_API_KEY=...`.
+- Get CDP API key if going that route for Phase 3.
+- Reserve domain.
+- Push repo to GitHub, link Vercel preview.
+
+---
+
 ## 2026-05-22 — Phase 0 (bootstrap)
 
 **Goal**: scaffold the repo and validate the toolchain.

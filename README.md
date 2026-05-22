@@ -31,6 +31,8 @@ pnpm dev
 ## Docs
 - [`CLAUDE.md`](./CLAUDE.md) — project contract, hard rules.
 - [`ROADMAP.md`](./ROADMAP.md) — 8-phase delivery plan.
+- [`docs/HANDOFF.md`](./docs/HANDOFF.md) — **start here for any new session**.
+- [`docs/SESSION_NOTES.md`](./docs/SESSION_NOTES.md) — what actually happened, per phase.
 - [`docs/decisions.md`](./docs/decisions.md) — architecture decision records.
 - [`docs/builder-score-log.md`](./docs/builder-score-log.md) — weekly Builder Score tracking.
 

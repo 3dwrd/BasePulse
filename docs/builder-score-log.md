@@ -33,9 +33,11 @@ Template (copy + fill at end of each week):
   - [x] Repo bootstrapped with CLAUDE.md, ROADMAP.md, docs/
   - [x] Environment validated (Node 22, Foundry, Redis)
   - [x] 10 Base skills installed
-  - [x] Phase 1 (Next.js 16 shell + SIWB auth) closed locally — 3 commits
+  - [x] Phase 1 (Next.js 16 shell + SIWB auth) closed locally
+  - [x] Phase 2 (Portfolio token balances + VPS cache + Redis) closed locally
   - [ ] Basename registration — pending
   - [ ] talent.app profile creation — pending
   - [ ] Human Checkmark — pending
-- Commits this week: `132942d`, `6cfc842`, `3b1f97a`
-- Next week focus: identity setup (Basename + talent.app + Human Checkmark), Phase 2 (portfolio + VPS cache + Alchemy), push to GitHub + Vercel preview.
+  - [ ] GitHub push + Vercel preview — pending
+- Commits this week: `132942d`, `6cfc842`, `3b1f97a`, `7ba5a27`, `fc7727a`, `6d0c0fd`
+- Next session focus: Phase 3 (gas tracker). Human work in parallel: identity setup + Alchemy/CDP keys + domain + GitHub push.
