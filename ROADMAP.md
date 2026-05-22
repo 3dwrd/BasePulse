@@ -72,10 +72,10 @@ A utility MiniApp for Base ecosystem users that combines portfolio tracking, gas
 
 ### Phase 3 — Gas tracker (Week 3)
 **Goal**: actionable gas recommendations.
-- [ ] CDP RPC gas polling (Redis TTL 15 s).
-- [ ] 7-day historical store.
-- [ ] Percentile-based recommendation engine.
-- [ ] UI: current gas + 24h chart + recommendation badge.
+- [x] Public Base RPC gas polling (Redis TTL 15 s). CDP RPC deferred until API key obtained.
+- [x] 7-day historical store (Redis sorted set, sampler embedded in cache service).
+- [x] Percentile-based recommendation engine (p25/p50/p75 → low/normal/high/unknown).
+- [x] UI: current gas + 7d sparkline (hand-rolled SVG) + recommendation badge.
 - [ ] Email/push alerts deferred to v1.1.
 
 **Verification**: 7-day chart populated, recommendation updates live.

@@ -197,3 +197,38 @@ Goal from ROADMAP: 7-day Base gas history + percentile-based "good time to trans
 - Aerodrome positions query.
 - Morpho lending positions query.
 - USD valuations (Alchemy `getTokenPrices` or DeFiLlama as fallback).
+
+---
+
+## 2026-05-22 — Phase 3 (gas tracker)
+
+**Goal**: 7-day Base gas history + percentile-based recommendation on `/gas`.
+
+**Decisions taken (Q1/Q2/Q3 from bootstrap)**
+- Q1 RPC: **public Base RPC** (`https://mainnet.base.org`, `https://sepolia.base.org`). CDP deferred.
+- Q2 Sparkline: **hand-rolled SVG**, no `recharts` dep.
+- Q3 Sampler: **embedded** in `services/cache` via `setInterval(60s)`, fires once immediately on boot.
+
+**What got built**
+- `services/cache/src/gas.ts` — RPC fetch (`eth_gasPrice` → gwei with 4-decimal precision via bigint scaling), Redis sorted-set storage (`gas:<chainId>:samples`, score=ms, member=`<ms>:<gwei>`), 7d trim on each insert, p25/p50/p75 via linear interpolation, `classify()` → `low|normal|high|unknown` (unknown if <5 samples).
+- Endpoints: `GET /v1/gas/:chainId/current` (TTL 15s) and `/history` (TTL 60s). Both gated by `x-internal-token`.
+- `apps/web/app/api/gas/[chainId]/route.ts` — server proxy that calls cache for both current+history in parallel.
+- `apps/web/app/gas/page.tsx` — auto-refetch every 30s, recommendation badge with color-coded styles, hand-rolled SVG sparkline (linear path, scales by min/max of visible window), p25/p50/p75 stat cards.
+
+**Environment surprises**
+- Found a stale `tsx watch` cache process from a prior session still bound to :4000 — it hot-reloaded the new gas module automatically, no restart needed.
+
+**Verification** ✅
+- `tsc --noEmit` clean on both workspaces.
+- `pnpm --filter @basepulse/web build` → 11 routes including `/api/gas/[chainId]` and `/gas`.
+- After ~5 min of sampler runtime: `curl /v1/gas/8453/current` returned `gwei=0.0243, recommendation=high, stats.count=5`.
+- `/v1/gas/8453/history` returned 5 samples with computed p25/p50/p75.
+- Mainnet RPC reachable from VPS without auth.
+
+**NOT verified**
+- `/gas` rendered in a real browser (no Vercel preview yet — same blocker as Phase 1/2).
+- Sepolia chain 84532 — sampler is running for both, but only mainnet probed.
+
+**Open follow-ups**
+- Wait for ≥1 hour of samples before judging whether the recommendation thresholds feel right.
+- If Base gas stays this low (sub-0.01 gwei) the `low/normal/high` distinction may need an absolute floor to be useful.

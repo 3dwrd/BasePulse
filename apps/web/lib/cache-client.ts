@@ -30,3 +30,50 @@ export async function getTokens(chainId: number, address: string): Promise<Cache
   }
   return res.json() as Promise<CachedTokens>;
 }
+
+export type GasRecommendation = 'low' | 'normal' | 'high' | 'unknown';
+
+export interface GasStats {
+  p25: number;
+  p50: number;
+  p75: number;
+  count: number;
+}
+
+export interface GasCurrent {
+  chainId: number;
+  gwei: number;
+  fetchedAt: number;
+  recommendation: GasRecommendation;
+  stats: GasStats | null;
+}
+
+export interface GasSample {
+  t: number;
+  gwei: number;
+}
+
+export interface GasHistory {
+  chainId: number;
+  samples: GasSample[];
+  stats: GasStats | null;
+  fetchedAt: number;
+}
+
+async function getFromCache<T>(path: string): Promise<T> {
+  const { baseUrl, token } = config();
+  const res = await fetch(`${baseUrl}${path}`, {
+    headers: { 'x-internal-token': token },
+    cache: 'no-store',
+  });
+  if (!res.ok) throw new Error(`cache service ${res.status}: ${await res.text()}`);
+  return res.json() as Promise<T>;
+}
+
+export function getGasCurrent(chainId: number): Promise<GasCurrent> {
+  return getFromCache<GasCurrent>(`/v1/gas/${chainId}/current`);
+}
+
+export function getGasHistory(chainId: number): Promise<GasHistory> {
+  return getFromCache<GasHistory>(`/v1/gas/${chainId}/history`);
+}
