@@ -1,0 +1,23 @@
+{
+  "name": "@basepulse/cache",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "start": "node --import tsx/esm src/index.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "echo 'no lint configured'"
+  },
+  "dependencies": {
+    "fastify": "5.8.5",
+    "@fastify/cors": "11.2.0",
+    "ioredis": "5.10.1",
+    "dotenv": "17.4.2"
+  },
+  "devDependencies": {
+    "@types/node": "22.9.0",
+    "tsx": "4.22.3",
+    "typescript": "5.7.3"
+  }
+}

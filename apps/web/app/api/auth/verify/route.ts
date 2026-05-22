@@ -33,7 +33,7 @@ export async function POST(req: Request) {
   }
 
   const nonceMatch = message.match(/Nonce: (\w+)/);
-  if (!nonceMatch || !consumeNonce(nonceMatch[1])) {
+  if (!nonceMatch || !(await consumeNonce(nonceMatch[1]))) {
     return NextResponse.json({ error: 'Invalid or reused nonce' }, { status: 401 });
   }
 
