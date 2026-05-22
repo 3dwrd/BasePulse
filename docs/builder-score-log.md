@@ -39,5 +39,18 @@ Template (copy + fill at end of each week):
   - [ ] talent.app profile creation — pending
   - [ ] Human Checkmark — pending
   - [ ] GitHub push + Vercel preview — pending
-- Commits this week: `132942d`, `6cfc842`, `3b1f97a`, `7ba5a27`, `fc7727a`, `6d0c0fd`
+- Commits this week: `132942d`, `6cfc842`, `3b1f97a`, `7ba5a27`, `fc7727a`, `6d0c0fd`, `6bc1ce2`
 - Next session focus: Phase 3 (gas tracker). Human work in parallel: identity setup + Alchemy/CDP keys + domain + GitHub push.
+
+## Verification blockers (external)
+
+### Human Checkmark — BLOCKED 2026-05-22
+- **Status**: blocked-external (not our side, no action available now).
+- **What was tried**:
+  - Worldcoin / World ID — inviable (requires physical Orb, not accessible to user).
+  - Second provider (NFC document scan, likely Self.xyz / Civic / Privado ID) — first method never reads document; second method rejects request across multiple retries with different documents.
+- **Impact**: NOT a profile-creation gate. Builder Score still accrues from wallet activity, GitHub, and onchain signals. Human Checkmark is a booster (likely +10–25 pts), not a hard requirement for Builder Rewards leaderboard eligibility.
+- **Retry cadence**: weekly, on Mondays. If still failing after 4 weeks (by 2026-06-22), evaluate:
+  1. Alternative verifications accepted by talent.app (Gitcoin Passport, Coinbase Verifications, BrightID).
+  2. Whether Talent+ "Verified Checkmark" ($4.90/mo) is functionally equivalent — only pay if confirmed.
+- **Decision recorded for future me**: do NOT block any Phase work on this. Keep shipping code; verification is recoverable later, lost weeks of activity are not.
