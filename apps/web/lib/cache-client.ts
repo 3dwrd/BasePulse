@@ -77,3 +77,39 @@ export function getGasCurrent(chainId: number): Promise<GasCurrent> {
 export function getGasHistory(chainId: number): Promise<GasHistory> {
   return getFromCache<GasHistory>(`/v1/gas/${chainId}/history`);
 }
+
+export type ScoreTier = 'novice' | 'active' | 'engaged' | 'power';
+
+export interface ScoreComponent {
+  id: string;
+  label: string;
+  points: number;
+  max: number;
+}
+
+export interface ScoreRecommendation {
+  id: string;
+  label: string;
+  weight: number;
+}
+
+export interface DerivedScore {
+  address: `0x${string}`;
+  chainId: number;
+  total: number;
+  tier: ScoreTier;
+  breakdown: {
+    baseTxCount: number;
+    l1TxCount: number;
+    tokenDiversity: number;
+    bridged: boolean;
+  };
+  components: ScoreComponent[];
+  recommendations: ScoreRecommendation[];
+  source: 'derived';
+  fetchedAt: number;
+}
+
+export function getScore(chainId: number, address: string): Promise<DerivedScore> {
+  return getFromCache<DerivedScore>(`/v1/score/${chainId}/${address}`);
+}
