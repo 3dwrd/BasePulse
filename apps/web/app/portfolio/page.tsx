@@ -2,6 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { formatBalance } from '@/lib/format';
+import { SnapshotButton } from '@/components/snapshot-button';
 
 interface PortfolioResponse {
   tokens: {
@@ -80,6 +81,7 @@ export default function PortfolioPage() {
           <p className="text-xs text-neutral-500">
             Fetched {new Date(data.fetchedAt).toLocaleTimeString()} · {data.tokens.length} tokens
           </p>
+          <SnapshotButton tokens={data.tokens} />
         </>
       )}
     </div>

@@ -27,10 +27,10 @@ build/
 next-env.d.ts
 
 # Foundry
-packages/contracts/out/
-packages/contracts/cache/
-packages/contracts/broadcast/
-packages/contracts/lib/
+contracts/out/
+contracts/cache/
+contracts/broadcast/
+contracts/lib/
 
 # Skills (reinstall from skills-lock.json)
 .agents/
