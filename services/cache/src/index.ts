@@ -14,6 +14,7 @@ import {
   type GasCurrent,
   type GasHistory,
 } from './gas.js';
+import { computeScore, type DerivedScore } from './score.js';
 
 const app = Fastify({ logger: { level: env.NODE_ENV === 'production' ? 'info' : 'debug' } });
 
@@ -114,6 +115,31 @@ app.get<{ Params: GasParams }>('/v1/gas/:chainId/history', async (req, reply) =>
   await cacheSet(cacheKey, payload, 60);
   reply.header('x-cache', 'MISS');
   return payload;
+});
+
+interface ScoreParams {
+  chainId: string;
+  address: string;
+}
+
+app.get<{ Params: ScoreParams }>('/v1/score/:chainId/:address', async (req, reply) => {
+  const chainId = Number(req.params.chainId);
+  const address = req.params.address.toLowerCase() as `0x${string}`;
+  if (!/^0x[a-f0-9]{40}$/.test(address)) {
+    return reply.code(400).send({ error: 'Invalid address' });
+  }
+
+  const cacheKey = `score:v1:${chainId}:${address}`;
+  const cached = await cacheGet<DerivedScore>(cacheKey);
+  if (cached) {
+    reply.header('x-cache', 'HIT');
+    return cached;
+  }
+
+  const score = await computeScore(chainId, address);
+  await cacheSet(cacheKey, score, 3600);
+  reply.header('x-cache', 'MISS');
+  return score;
 });
 
 startSampler(SUPPORTED_GAS_CHAINS);
