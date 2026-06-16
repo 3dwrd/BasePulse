@@ -37,14 +37,25 @@ set -a; . contracts/.env; set +a
 
 ## 2. Testnet deploy (Base Sepolia, chain 84532) — DO THIS FIRST
 
+> **CRITICAL:** pass BOTH `--account` AND `--sender <your deployer address>`.
+> With `--account` alone, forge simulates with its DEFAULT sender
+> (`0x1804c8…`) and then REFUSES to broadcast ("You seem to be using Foundry's
+> default sender") — the script prints a fake address but nothing hits the chain.
+> Get your address from `cast wallet address --account basepulse-deployer`.
+
 ```bash
 cd contracts
+DEPLOYER=$(cast wallet address --account basepulse-deployer)   # prompts password
 forge script script/DeployPortfolioSnapshot.s.sol:DeployPortfolioSnapshot \
   --rpc-url base_sepolia \
   --account basepulse-deployer \
+  --sender "$DEPLOYER" \
   --broadcast --verify
-# prompts for the keystore password (key stays encrypted)
+# prompts for the keystore password again (key stays encrypted)
 ```
+
+After it runs, CONFIRM it's real (must return non-empty bytecode):
+`cast code <deployed_address> --rpc-url https://sepolia.base.org`
 
 Record the deployed address in `apps/web/.env.local`:
 `NEXT_PUBLIC_PORTFOLIO_SNAPSHOT_ADDRESS_SEPOLIA=0x...`
@@ -56,9 +67,11 @@ The script prints a `MAINNET DEPLOY` warning. Re-run with mainnet rpc:
 
 ```bash
 cd contracts
+DEPLOYER=$(cast wallet address --account basepulse-deployer)
 forge script script/DeployPortfolioSnapshot.s.sol:DeployPortfolioSnapshot \
   --rpc-url base_mainnet \
   --account basepulse-deployer \
+  --sender "$DEPLOYER" \
   --broadcast --verify
 ```
 
