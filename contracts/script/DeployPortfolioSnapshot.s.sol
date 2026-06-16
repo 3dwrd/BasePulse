@@ -16,7 +16,7 @@ contract DeployPortfolioSnapshot is Script {
         );
 
         if (chainId == 8453) {
-            console2.log("MAINNET DEPLOY — confirm via terminal prompt before broadcasting");
+            console2.log("MAINNET DEPLOY - confirm via terminal prompt before broadcasting");
         }
 
         vm.startBroadcast();
