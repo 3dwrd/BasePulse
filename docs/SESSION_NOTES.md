@@ -232,3 +232,60 @@ Goal from ROADMAP: 7-day Base gas history + percentile-based "good time to trans
 **Open follow-ups**
 - Wait for ≥1 hour of samples before judging whether the recommendation thresholds feel right.
 - If Base gas stays this low (sub-0.01 gwei) the `low/normal/high` distinction may need an absolute floor to be useful.
+
+---
+
+## 2026-06-17 — Recovery session (VPS migration aftermath + viability re-check)
+
+**Context**: Owner asked to (a) verify the strategy is still worth it and (b) resume.
+This was the first session on the NEW VPS after migration. The code had been copied
+over but the toolchain and git history had NOT.
+
+**What I found (state audit)**
+- Local `.git` was GONE — version control lost in the migration. But the real history
+  was intact on GitHub (`3dwrd/BasePulse`, default branch `phase-5a-contract-testnet`,
+  last push 2026-05-28). Local working tree matched that history exactly except two files.
+- Toolchain broken on this host: Node was v20 (need 22+), `redis-cli`/`forge` absent.
+- Project is FURTHER along than HANDOFF said: Phase 4 (score + OG share card) and
+  Phase 5a (PortfolioSnapshot.sol + tests + deploy script) were already built/committed.
+- Nothing was ever deployed: no Vercel, no live URL, no contract onchain. All "local only".
+
+**Viability re-check (researched, sources June 2026)** — the uncomfortable truth:
+- **Builder Rewards is DEAD for Base.** talent.app shows "Base Campaign Has Ended"
+  (last Base campaign ended 2026-01-31). Only Celo/Stacks campaigns are live now.
+  The "2 ETH/week" in Base docs is stale. TALENT token down ~99.8% (ATL).
+  -> Strategic goal #1 is NOT actionable. Do not treat as income.
+- **Base airdrop: unconfirmed, repriced to ~2027.** No token, no snapshot yet (so not
+  too late), but Polymarket odds for a 2026 launch collapsed. It's a lottery ticket.
+- **Technical premise CORRECT**: base.dev + April 9 2026 standard-web-app spec is real
+  and current. wagmi+viem+SIWE is the right path. Caveat: "one codebase -> base.dev AND
+  Farcaster" is overstated; April spec DECOUPLES from Farcaster, doesn't unify.
+- Owner's decision: **"ship mínimo"** — make the local work real (git + GitHub + deploy +
+  base.dev) for cheap 2027 optionality + a real portfolio piece. NOT a rewards farm.
+
+**What I did**
+- Rebuilt toolchain on new VPS: nvm + Node 22.22.3, Foundry 1.7.1 (forge/cast/anvil).
+- Stood up a DEDICATED Redis container `basepulse-redis` on 127.0.0.1:**6391** (isolation
+  rule: not reusing other projects' redis-ink/redis-event/etc on 6379). Updated
+  `REDIS_URL` in `services/cache/.env` and `apps/web/.env.local` to 6391.
+- `pnpm install` (544 pkgs) clean. `pnpm -r typecheck` clean. Web build clean (14 routes,
+  incl. /score, /score/[address], OG image). `forge test` 6/6 pass.
+- Recovered git: re-init, re-attached to real remote history via `reset --mixed`, kept
+  branch `phase-5a-contract-testnet`. Pushed 3 new commits:
+  - `fix(contracts)`: deploy script had a U+2014 em-dash that broke `forge build` —
+    the phase-5a contract on GitHub literally did not compile. Now fixed.
+  - `chore`: restored the comprehensive `.gitignore` (remote had regressed to minimal).
+  - `docs(deploy)`: `docs/DEPLOY.md` secure runbook + `contracts/.env.example`.
+
+**Wallet / key handling**
+- Confirmed NO wallet/keystore exists on this device; no key found exposed anywhere.
+- Set up the SECURE path: encrypted Foundry keystore (`cast wallet import --account`),
+  documented in `docs/DEPLOY.md`. The raw key never enters chat/code/CI. Owner runs the
+  import + the actual deploys themselves (mainnet is human-gated per CLAUDE.md anyway).
+
+**Still pending (human-gated)**
+- Import deployer key to keystore -> fund -> deploy testnet (Sepolia) -> then mainnet,
+  verify on BaseScan. Record addresses in builder-score-log.md + .env.local.
+- Vercel deploy (owner's account) + base.dev registration with a Builder Code.
+- talent.app profile / Basename: low priority now that Builder Rewards is paused; do it
+  anyway for the airdrop footprint, but it's no longer urgent.

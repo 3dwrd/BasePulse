@@ -39,22 +39,41 @@ Reglas del loop (recordatorio):
 
 ---
 
-## Per-phase status snapshot (as of commit `6d0c0fd`, 2026-05-22)
+## ⚠️ Strategy reality check (2026-06-17) — READ BEFORE INVESTING TIME
+- **Builder Rewards (goal #1) is PAUSED/ENDED for Base** (talent.app: "Base Campaign Has
+  Ended", last campaign 2026-01-31). NOT a current income source. Re-verify at
+  talent.app/~/ecosystems/base before grinding for it.
+- **Base airdrop**: no token, no snapshot (not too late), but repriced to ~2027. Lottery ticket.
+- **Mode = "ship mínimo"**: make the work real (git ✅ + deploy + base.dev) for cheap
+  optionality + portfolio. Do NOT build more features before anything is shipped onchain.
+- Full analysis: SESSION_NOTES.md → "2026-06-17 — Recovery session".
+
+## Per-phase status snapshot (as of commit `136a1c0`, 2026-06-17)
 
 | Phase | Status | Commit |
 |---|---|---|
-| 0 — Bootstrap | ✅ Technical closed. Human steps (Basename, talent.app, Human Checkmark, domain, GitHub push, Vercel) pending. | `132942d`, `6cfc842` |
-| 1 — Shell + SIWB | ✅ Local closed. Real-wallet popup test pending (needs Vercel preview). | `3b1f97a` |
+| 0 — Bootstrap | ✅ Technical closed. Human steps (Basename, talent.app, domain, Vercel) pending. Human Checkmark blocked-external. | `132942d` |
+| 1 — Shell + SIWB | ✅ Local closed. Real-wallet popup test pending (needs hosted deploy). | `3b1f97a` |
 | 2 — Portfolio | ✅ Token balances closed. Subgraphs (Aerodrome, Morpho) deferred to Phase 2.5. | `fc7727a` |
-| 3 — Gas | ⏸ Next up. | — |
-| 4 — Score + share card | ⏸ | — |
-| 5a — Contract testnet | ⏸ | — |
-| 5b — Paymaster + mainnet | ⏸ | — |
-| 6 — Distribution | ⏸ | — |
+| 3 — Gas | ✅ Local closed (7d history + percentile recommendation). | phase-3 |
+| 4 — Score + share card | ✅ Local closed (score endpoint + /score + dynamic OG image). | phase-4 |
+| 5a — Contract testnet | 🟡 Built + tests 6/6 pass + deploy script compiles. NOT YET DEPLOYED to Sepolia. | `136a1c0` |
+| 5b — Paymaster + mainnet | ⏸ Mainnet deploy is human-gated. See docs/DEPLOY.md. | — |
+| 6 — Distribution | ⏸ Needs Vercel + base.dev registration. | — |
 | 7 — Iteration | ⏸ | — |
 
+**Critical path now (ship mínimo):** deploy PortfolioSnapshot to Sepolia → mainnet
+(docs/DEPLOY.md, human-gated key) → Vercel deploy → base.dev registration with Builder Code.
+
+## Environment on the NEW VPS (rebuilt 2026-06-17)
+- Node 22.22.3 via nvm (`nvm use 22`). Foundry 1.7.1 (`export PATH="$PATH:$HOME/.foundry/bin"`).
+- Redis: **dedicated container `basepulse-redis` on 127.0.0.1:6391** (NOT the host, NOT other
+  projects' redis). `docker start basepulse-redis` if stopped. `REDIS_URL` in both .env files → 6391.
+- Git: recovered, remote `https://github.com/3dwrd/BasePulse.git`, branch `phase-5a-contract-testnet`.
+
 ## What's running locally (after fresh boot)
-Nothing. Both servers (`pnpm --filter @basepulse/web start` on :3200 and `pnpm --filter @basepulse/cache dev` on :4000) were stopped at end of session. Restart manually when working on Phase 3.
+Nothing but the `basepulse-redis` container. Start servers manually:
+`pnpm --filter @basepulse/web start` (:3200) and `pnpm --filter @basepulse/cache dev` (:4000).
 
 ## Secrets that must exist locally (NOT in git)
 - `apps/web/.env.local`:
@@ -65,7 +84,7 @@ Nothing. Both servers (`pnpm --filter @basepulse/web start` on :3200 and `pnpm -
 - `services/cache/.env`:
   - `INTERNAL_API_TOKEN` (same value as above)
   - `CACHE_PORT=4000`
-  - `REDIS_URL=redis://localhost:6379`
+  - `REDIS_URL=redis://127.0.0.1:6391` (dedicated basepulse-redis container)
   - `ALCHEMY_API_KEY` (optional — empty = mock mode)
 
 If these files don't exist anymore (VPS reboot, accidental delete), regenerate with:
