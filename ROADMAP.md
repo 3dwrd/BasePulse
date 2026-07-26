@@ -111,6 +111,9 @@ A utility MiniApp for Base ecosystem users that combines portfolio tracking, gas
 
 ### Phase 6 — Distribution (Week 5–6)
 **Goal**: discoverable across surfaces.
+- [x] Live at a direct URL: self-hosted on the owner's VPS, `https://basepulse.botsniper.xyz`
+      (pm2 + nginx + certbot, not Vercel — see SESSION_NOTES.md 2026-07-27). Superseds the
+      "Reserve domain" step from Phase 0 and the Vercel plan in ADR-003 for hosting.
 - [ ] Register on Base.dev (name, icon, screenshots, description, category, builder code).
 - [ ] Farcaster Mini App compat (conditional rendering on single codebase).
 - [ ] Launch cast on Farcaster + thread on X.

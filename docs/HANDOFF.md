@@ -62,8 +62,14 @@ Reglas del loop (recordatorio):
 | 6 — Distribution | ⏸ Needs Vercel + base.dev registration. | — |
 | 7 — Iteration | ⏸ | — |
 
+**Update 2026-07-27**: Frontend is live — self-hosted on the owner's VPS at
+`https://basepulse.botsniper.xyz` (pm2 + nginx + certbot), not Vercel. See
+`docs/SESSION_NOTES.md` for the deploy session and a pre-existing `/score` SSR bug that
+got fixed along the way (`WagmiProviderNotFoundError`). Scope was explicitly "website
+only" — contract deploy below is still untouched.
+
 **Critical path now (ship mínimo):** deploy PortfolioSnapshot to Sepolia → mainnet
-(docs/DEPLOY.md, human-gated key) → Vercel deploy → base.dev registration with Builder Code.
+(docs/DEPLOY.md, human-gated key) → base.dev registration with Builder Code.
 
 ## Environment on the NEW VPS (rebuilt 2026-06-17)
 - Node 22.22.3 via nvm (`nvm use 22`). Foundry 1.7.1 (`export PATH="$PATH:$HOME/.foundry/bin"`).

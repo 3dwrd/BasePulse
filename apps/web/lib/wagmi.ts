@@ -1,7 +1,7 @@
 'use client';
 
 import { createBaseAccountSDK } from '@base-org/account';
-import { custom } from 'viem';
+import { custom, http } from 'viem';
 import { createConfig } from 'wagmi';
 import { base, baseSepolia } from 'wagmi/chains';
 
@@ -22,10 +22,27 @@ export function getBaseAccountSDK() {
   return sdkInstance;
 }
 
+// SSR/pre-mount config: public RPC transport, no `window` dependency. Wagmi
+// hooks (useAccount, etc.) require a WagmiProvider ancestor to exist on every
+// render pass including SSR, so this keeps that context satisfied (reporting
+// "disconnected") until buildWagmiConfig() swaps in the real wallet provider
+// on the client.
+export function buildFallbackWagmiConfig() {
+  return createConfig({
+    chains: [base, baseSepolia],
+    ssr: true,
+    transports: {
+      [base.id]: http(),
+      [baseSepolia.id]: http(),
+    },
+  });
+}
+
 export function buildWagmiConfig() {
   const provider = getBaseAccountSDK().getProvider();
   return createConfig({
     chains: [base, baseSepolia],
+    ssr: true,
     transports: {
       [base.id]: custom(provider),
       [baseSepolia.id]: custom(provider),

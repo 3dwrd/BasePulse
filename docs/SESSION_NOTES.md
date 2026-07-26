@@ -289,3 +289,63 @@ over but the toolchain and git history had NOT.
 - Vercel deploy (owner's account) + base.dev registration with a Builder Code.
 - talent.app profile / Basename: low priority now that Builder Rewards is paused; do it
   anyway for the airdrop footprint, but it's no longer urgent.
+
+---
+
+## 2026-07-27 — Website self-hosted live (scope: frontend only, no contract deploy)
+
+**Context**: Owner pointed `basepulse.botsniper.xyz` at this VPS and asked to ship the
+website "once and for all." Decided explicitly with owner: **website only** this session
+(not the Sepolia/mainnet contract deploy), and **self-host on this VPS** instead of the
+ADR-003/original Vercel plan — coherent with the rest of the owner's infra (pm2 + nginx +
+certbot per-service, same pattern as `studio.botsniper.xyz`, `pdv.botsniper.xyz`, etc.).
+ADR-003 (VPS cache, Vercel frontend) is effectively superseded for hosting; worth a formal
+ADR update if this becomes permanent.
+
+**What got built/deployed**
+- Restored toolchain state: `basepulse-redis` container was stopped, restarted it (still on
+  dedicated `127.0.0.1:6391`, isolated per [[aislamiento-servicios]] convention).
+- `pnpm install` at workspace root (root `node_modules` had gone missing; `apps/web` and
+  `services/cache` node_modules were intact). `pnpm -r typecheck` and web build clean.
+- Switched `NEXT_PUBLIC_DEFAULT_CHAIN` from `base-sepolia` to `base` in `apps/web/.env.local`
+  — this is a public-facing site now, mainnet gas/portfolio data is more useful than
+  testnet. Contract address envs stay empty (no contract deployed yet); `SnapshotButton`
+  already degrades gracefully to a "not configured" message in that case, no code change
+  needed there.
+- New `ecosystem.config.js` at repo root (pm2, not docker — matches how `chatgen` and
+  `traccion-studio` run on this VPS): `basepulse-web` (`next start -p 3200`, points directly
+  at `node_modules/next/dist/bin/next` since pm2 fork-mode can't exec pnpm's `.bin` shell
+  shim as a Node script) and `basepulse-cache` (`tsx/esm` interpreter, :4000). Same
+  autorestart/backoff/memory-cap pattern as `bot-core-base/ecosystem.config.js`.
+- nginx site `basepulse.botsniper.xyz` (proxy to :3200) + `certbot --nginx` — same template
+  as the other `*.botsniper.xyz` sites. Live over HTTPS with auto HTTP->HTTPS redirect.
+
+**Bug found + fixed (pre-existing, not caused by this session's changes)**
+- `/score` 500'd: `ScoreRedirect` calls `useAccount()` unconditionally, but `Providers`
+  rendered children with **no** `WagmiProvider` ancestor at all until the Base Account SDK
+  finished its `useEffect` mount-gate (needs `window`). Wagmi throws
+  `WagmiProviderNotFoundError` synchronously if the hook runs with no provider in the tree —
+  this hit even during SSR (not just client hydration), because `/score` has
+  `dynamic = 'force-dynamic'`. `/`, `/portfolio`, `/gas` never called a wagmi hook directly
+  so they never hit it — this was never caught because the app had never been run outside
+  `next dev` before today.
+  - Fix: `lib/wagmi.ts` now exports `buildFallbackWagmiConfig()` — a `wagmi` config using
+    `http()` transports (no `window` dependency), `ssr: true`. `Providers` always wraps
+    children in `WagmiProvider`, seeded with the fallback config, then swaps to the real
+    Base Account SDK config post-mount. Matches wagmi's own documented SSR pattern instead
+    of hand-rolling a "no provider at all" gate.
+
+**Verification** ✅
+- `pnpm -r typecheck` clean, `pnpm --filter @basepulse/web build` clean (same 14 routes).
+- All of `/`, `/portfolio`, `/gas`, `/score`, `/score/<address>`,
+  `/score/<address>/opengraph-image`, `/api/gas/8453` return 200 locally (:3200) and over
+  `https://basepulse.botsniper.xyz`.
+- `pm2 save` done (survives VPS reboot via existing pm2 startup hook).
+- Cache `/health` → `mock=true` (no `ALCHEMY_API_KEY` set — portfolio shows realistic mock
+  token data, not a real wallet's balances, until that key is added).
+
+**Still out of scope (unchanged from previous session)**
+- Contract not deployed to Sepolia or mainnet — `SnapshotButton` shows "not configured".
+- No `NEXT_PUBLIC_APP_URL` set — score share links (`/score/[address]` OG/Farcaster/X
+  intents) will build with an empty base URL until that's added to `.env.local`.
+- base.dev / Farcaster registration untouched.
