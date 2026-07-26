@@ -7,6 +7,7 @@ import './globals.css';
 export const metadata: Metadata = {
   title: 'BasePulse',
   description: 'Portfolio, gas, and onchain score for Base.',
+  icons: { icon: '/icon.png', apple: '/icon.png' },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
