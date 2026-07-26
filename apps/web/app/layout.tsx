@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: 'BasePulse',
   description: 'Portfolio, gas, and onchain score for Base.',
   icons: { icon: '/icon.png', apple: '/icon.png' },
+  other: { 'base:app_id': '6a668e04281b6db318994d46' },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
