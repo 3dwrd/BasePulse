@@ -57,12 +57,21 @@ Reglas del loop (recordatorio):
 | 2 — Portfolio | ✅ Token balances closed. Subgraphs (Aerodrome, Morpho) deferred to Phase 2.5. | `fc7727a` |
 | 3 — Gas | ✅ Local closed (7d history + percentile recommendation). | phase-3 |
 | 4 — Score + share card | ✅ Local closed (score endpoint + /score + dynamic OG image). | phase-4 |
-| 5a — Contract testnet | 🟡 Built + tests 6/6 pass + deploy script compiles. NOT YET DEPLOYED to Sepolia. | `136a1c0` |
-| 5b — Paymaster + mainnet | ⏸ Mainnet deploy is human-gated. See docs/DEPLOY.md. | — |
-| 6 — Distribution | ⏸ Needs Vercel + base.dev registration. | — |
+| 5a — Contract testnet | ✅ Deployed + verified on Sepolia 2026-07-27: `0xd2240b90486F63858ED823a2620cb6DC6FcB6019`. | `06c068e` |
+| 5b — Paymaster + mainnet | ✅ Deployed + verified on mainnet 2026-07-27 (same address). Paymaster/gasless UX deferred. | `b0e5414` |
+| 6 — Distribution | 🟡 Site live at own URL. `app_id` verification meta tag live. Builder Code registration still pending. | — |
 | 7 — Iteration | ⏸ | — |
 
-**Update 2026-07-27**: Frontend is live — self-hosted on the owner's VPS at
+**Update 2026-07-27 (contract deploy)**: PortfolioSnapshot is live and verified on BOTH
+Sepolia and mainnet at `0xd2240b90486F63858ED823a2620cb6DC6FcB6019` (same address on both
+— CREATE address depends on deployer+nonce, not chain, and it was the deployer's first tx
+on each). Deployer wallet: fresh `cast wallet new` keystore, funded with real ETH by the
+owner via Base App. Hit and fixed the Etherscan V2 API migration (old BaseScan keys dead,
+see `contracts/foundry.toml` + `ETHERSCAN_API_KEY`). `apps/web/.env.local` has both
+`NEXT_PUBLIC_PORTFOLIO_SNAPSHOT_ADDRESS_SEPOLIA` and `..._MAINNET` wired; `SnapshotButton`
+is fully live in production. See `contracts/deployments.md` for tx hashes/blocks.
+
+**Update 2026-07-27 (frontend)**: Frontend is live — self-hosted on the owner's VPS at
 `https://basepulse.botsniper.xyz` (pm2 + nginx + certbot), not Vercel. See
 `docs/SESSION_NOTES.md` for the deploy session and a pre-existing `/score` SSR bug that
 got fixed along the way (`WagmiProviderNotFoundError`). Scope was explicitly "website

@@ -90,24 +90,28 @@ A utility MiniApp for Base ecosystem users that combines portfolio tracking, gas
 
 **Verification**: share own score as cast/tweet, OG image renders.
 
-### Phase 5a — Contract on testnet (Week 4–5)
+### Phase 5a — Contract on testnet (Week 4–5) — **CLOSED 2026-07-27**
 **Goal**: Solidity work proven on Sepolia.
-- [ ] Foundry project under `/contracts`.
-- [ ] `PortfolioSnapshot.sol`: stores keccak hash + timestamp + BuilderCode attribution.
-- [ ] Full unit test coverage.
-- [ ] Deploy Base Sepolia, verify on BaseScan.
-- [ ] Frontend wiring: snapshot button → tx → confirmation.
+- [x] Foundry project under `/contracts`.
+- [x] `PortfolioSnapshot.sol`: stores keccak hash + timestamp + BuilderCode attribution.
+- [x] Full unit test coverage (6/6, per SESSION_NOTES 2026-06-17).
+- [x] Deploy Base Sepolia, verify on BaseScan. `0xd2240b90486F63858ED823a2620cb6DC6FcB6019`.
+- [x] Frontend wiring: snapshot button → tx → confirmation (`SnapshotButton`, was already built).
 
-**Verification**: end-to-end snapshot flow works on Sepolia, contract verified.
+**Verification**: ✅ contract verified at https://sepolia.basescan.org/address/0xd2240b90486f63858ed823a2620cb6dc6fcb6019.
 
-### Phase 5b — Paymaster + mainnet (Week 5)
-**Goal**: gasless UX + real mainnet activity.
-- [ ] CDP Paymaster integration (gasless txs).
-- [ ] Mainnet deploy script with **interactive confirmation prompt**.
-- [ ] Deploy + verify on BaseScan mainnet.
-- [ ] Smoke test from production frontend.
+### Phase 5b — Mainnet (Week 5) — **CLOSED 2026-07-27 (deploy); paymaster deferred**
+**Goal**: real mainnet activity.
+- [ ] CDP Paymaster integration (gasless txs) — deferred, not required to ship.
+- [x] Mainnet deploy script with **interactive confirmation prompt** (`deploy-mainnet.sh`,
+      types `DEPLOY` to confirm, per CLAUDE.md's human-confirmation rule).
+- [x] Deploy + verify on BaseScan mainnet. Same address as Sepolia (CREATE depends on
+      deployer + nonce, not chain): `0xd2240b90486F63858ED823a2620cb6DC6FcB6019`.
+- [x] Smoke test from production frontend — `NEXT_PUBLIC_PORTFOLIO_SNAPSHOT_ADDRESS_MAINNET`
+      wired in `apps/web/.env.local`, site rebuilt/restarted, `SnapshotButton` live.
 
-**Verification**: real wallet, real mainnet tx, sponsored by paymaster, verified contract.
+**Verification**: ✅ https://basescan.org/address/0xd2240b90486f63858ed823a2620cb6dc6fcb6019 verified.
+Paymaster (gasless UX) left for a future iteration — plain signed txs work today.
 
 ### Phase 6 — Distribution (Week 5–6)
 **Goal**: discoverable across surfaces.
