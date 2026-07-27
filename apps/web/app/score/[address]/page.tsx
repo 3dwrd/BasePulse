@@ -20,7 +20,7 @@ export async function generateMetadata(
   return {
     title,
     description,
-    openGraph: { title, description, images: [ogUrl] },
+    openGraph: { title, description, images: [ogUrl], url: `/score/${address}`, type: 'website' },
     twitter: { card: 'summary_large_image', title, description, images: [ogUrl] },
     other: {
       'fc:frame': 'vNext',
