@@ -5,6 +5,7 @@ import { WalletConnect } from '@/components/wallet-connect';
 import './globals.css';
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'),
   title: 'BasePulse',
   description: 'Portfolio, gas, and onchain score for Base.',
   icons: { icon: '/icon.png', apple: '/icon.png' },
