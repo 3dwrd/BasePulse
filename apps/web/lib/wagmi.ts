@@ -2,11 +2,24 @@
 
 import { createBaseAccountSDK } from '@base-org/account';
 import { Attribution } from 'ox/erc8021';
-import { custom, http } from 'viem';
+import { http } from 'viem';
 import { createConfig } from 'wagmi';
+import { coinbaseWallet, injected, walletConnect } from 'wagmi/connectors';
 import { base, baseSepolia } from 'wagmi/chains';
 
 const defaultChain = process.env.NEXT_PUBLIC_DEFAULT_CHAIN === 'base' ? base : baseSepolia;
+
+const walletConnectProjectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID;
+
+// Other EVM wallets alongside Base Account (MetaMask/Rainbow/Trust/Brave all show up
+// via `injected()` — any EIP-1193 wallet extension does). `walletConnect()` needs a
+// project id from cloud.reown.com (free) for mobile QR pairing; omitted entirely
+// when unset instead of failing at runtime with an empty projectId.
+const otherWalletConnectors = [
+  injected(),
+  coinbaseWallet({ appName: 'BasePulse' }),
+  ...(walletConnectProjectId ? [walletConnect({ projectId: walletConnectProjectId })] : []),
+];
 
 // Real Base Builder Code (registered at dashboard.base.org), ERC-8021 attribution.
 // Set at the wagmi client level so useWriteContract/useSendTransaction/useSendCalls
@@ -48,14 +61,14 @@ export function buildFallbackWagmiConfig() {
 }
 
 export function buildWagmiConfig() {
-  const provider = getBaseAccountSDK().getProvider();
   return createConfig({
     chains: [base, baseSepolia],
     ssr: true,
     dataSuffix: BUILDER_CODE_DATA_SUFFIX,
+    connectors: otherWalletConnectors,
     transports: {
-      [base.id]: custom(provider),
-      [baseSepolia.id]: custom(provider),
+      [base.id]: http(),
+      [baseSepolia.id]: http(),
     },
   });
 }
