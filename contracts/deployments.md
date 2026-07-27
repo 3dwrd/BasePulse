@@ -11,7 +11,7 @@ Builder attribution tag baked into the contract calls: `BUILDER_CODE = 0x4241534
 | Network | Chain ID | Contract address | Deployer | Tx hash | Block | Verified | Date |
 |---|---|---|---|---|---|---|---|
 | Base Sepolia | 84532 | `0xd2240b90486F63858ED823a2620cb6DC6FcB6019` | `0x6F89Ad6562d94e04514CC4D3fd7Fb15C080219E7` | `0xd4882d05694fecc46d93f3e390dc8674ffe25be4e89af57fe459961703687d09` | 44670821 | Yes | 2026-07-27 |
-| Base Mainnet | 8453 | _pending_ | _pending_ | _pending_ | _pending_ | _pending_ | _pending_ |
+| Base Mainnet | 8453 | `0xd2240b90486F63858ED823a2620cb6DC6FcB6019` | `0x6F89Ad6562d94e04514CC4D3fd7Fb15C080219E7` | `0x77308156ae411f80c7de1fe68d18cb9aeddb57b03c4ece2c4b717196907d3d65` | 49160909 | Yes | 2026-07-27 |
 
 ## Notes
 - Estimated deploy cost (simulated 2026-06-17 on Sepolia): ~0.0000044 ETH (~399,865 gas @ 0.011 gwei). Mainnet is comparable — sub-cent.
