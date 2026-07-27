@@ -41,9 +41,22 @@ confirmed — likely **"Tools"** or **"Other"**, sub-category **"Portfolio Track
 
 ## Social links
 
-**Gap — none exist yet.** No X/Farcaster account for BasePulse itself has been created.
-DappRadar's form has a social-links field; leaving it blank is fine for submission, but
-worth deciding whether to spin up an account before or after listing.
+**Decided 2026-07-27, not yet created (human step — needs phone verification, can't be
+automated):**
+- **Farcaster**: new account, username `@usebasepulse` (exact `basepulse` was already
+  registered by someone else — confirmed via the public fname registry), display name
+  "BasePulse", PFP = `docs/assets/dappradar/logo-250.png`, bio: "Portfolio, gas timing,
+  and onchain score for Base. Check any wallet, free." + link to
+  `basepulse.botsniper.xyz`.
+- **X**: no new account — posts from the owner's existing personal account, no dedicated
+  BasePulse handle.
+- Deliberately NOT mixed with the unrelated "Mister Cínico" persona bot (different
+  product, different audience) even though both would ride on the same Postiz publishing
+  hub — same one-account-per-brand pattern used everywhere else.
+- Once `@usebasepulse` exists, add its link here and to the site's footer/bio if one
+  gets added. `basepulse.com` was checked and is unrelated (registered since 2012,
+  actively used by someone else) — `basepulse.botsniper.xyz` stays the canonical link
+  everywhere.
 
 ## Assets (ready to attach)
 
