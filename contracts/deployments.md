@@ -10,7 +10,7 @@ Builder attribution tag baked into the contract calls: `BUILDER_CODE = 0x4241534
 
 | Network | Chain ID | Contract address | Deployer | Tx hash | Block | Verified | Date |
 |---|---|---|---|---|---|---|---|
-| Base Sepolia | 84532 | _pending_ | _pending_ | _pending_ | _pending_ | _pending_ | _pending_ |
+| Base Sepolia | 84532 | `0xd2240b90486F63858ED823a2620cb6DC6FcB6019` | `0x6F89Ad6562d94e04514CC4D3fd7Fb15C080219E7` | `0xd4882d05694fecc46d93f3e390dc8674ffe25be4e89af57fe459961703687d09` | 44670821 | Yes | 2026-07-27 |
 | Base Mainnet | 8453 | _pending_ | _pending_ | _pending_ | _pending_ | _pending_ | _pending_ |
 
 ## Notes

@@ -31,7 +31,9 @@ Record that address in `docs/builder-score-log.md`. Fund it:
 
 ```bash
 cp contracts/.env.example contracts/.env
-# fill BASESCAN_API_KEY (free from basescan.org). RPC defaults are fine.
+# fill ETHERSCAN_API_KEY (free from etherscan.io/apidashboard — the old
+# basescan.org keys stopped working after the Etherscan V2 API migration).
+# RPC defaults are fine.
 set -a; . contracts/.env; set +a
 ```
 
