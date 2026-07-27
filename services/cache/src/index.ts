@@ -57,7 +57,18 @@ app.get<{ Params: TokensParams }>('/v1/tokens/:chainId/:address', async (req, re
     return cached;
   }
 
-  const tokens = await fetchTokenBalances(chainId, address);
+  let tokens: TokenBalance[];
+  try {
+    tokens = await fetchTokenBalances(chainId, address);
+  } catch (err) {
+    // Upstream (Alchemy) failed — say so instead of a bare 500.
+    req.log.error({ err }, 'token balances upstream failed');
+    return reply.code(502).send({
+      error: 'Upstream provider error',
+      detail: err instanceof Error ? err.message : String(err),
+    });
+  }
+
   const payload = { tokens, fetchedAt: Date.now() };
   await cacheSet(cacheKey, payload, 300);
   reply.header('x-cache', 'MISS');
