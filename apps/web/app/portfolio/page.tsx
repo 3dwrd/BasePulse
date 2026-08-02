@@ -81,9 +81,12 @@ export default function PortfolioPage() {
           <p className="text-xs text-neutral-500">
             Fetched {new Date(data.fetchedAt).toLocaleTimeString()} · {data.tokens.length} tokens
           </p>
-          <SnapshotButton tokens={data.tokens} />
         </>
       )}
+
+      {/* Rendered outside the `data` guard on purpose: signed-out visitors must still see that
+          this app writes onchain, otherwise the action is invisible behind connect + SIWE. */}
+      {!isLoading && <SnapshotButton tokens={data?.tokens ?? []} />}
     </div>
   );
 }
