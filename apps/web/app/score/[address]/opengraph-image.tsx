@@ -20,8 +20,12 @@ const TIER_BG: Record<string, string> = {
   power: '#10b981',
 };
 
-export default async function OG({ params }: { params: { address: string } }) {
-  const { address } = params;
+// `params` is a Promise in Next 15+. This route had it annotated as a plain object and
+// destructured synchronously, so `address` was always undefined and every share card
+// rendered "Invalid address" — typecheck stayed silent because the hand-written annotation
+// overrode Next's generated types. Matches the pattern in page.tsx.
+export default async function OG({ params }: { params: Promise<{ address: string }> }) {
+  const { address } = await params;
   if (!isAddress(address)) {
     return new ImageResponse(<div style={{ fontSize: 48 }}>Invalid address</div>, size);
   }
