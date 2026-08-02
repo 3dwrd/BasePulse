@@ -16,10 +16,22 @@ Estado al **2026-08-02, 20:25**. Marcá lo tuyo, yo marco lo mío.
 
 ## TU LADO (nadie más lo puede hacer)
 
-### 1. Verificar el correo en GitHub — la de más palanca, 3 minutos
+### 1. ~~Verificar el correo en GitHub~~ — ✅ HECHO 2026-08-02
 
-**Medición de hoy: 41 commits en el repo, los 41 huérfanos** (`author: null` en la API). Tu
-gráfica de contribuciones está vacía pese a que el trabajo existe y ahora es público.
+**Antes:** 41 commits, los 41 huérfanos (`author: null`).
+**Después:** **36 de 42 atribuidos a `3dwrd`**. Los 6 que siguen huérfanos son exactamente los
+firmados como `root@vmi3158163…`; no se recuperan sin reescribir historia ya pusheada.
+
+El `git config` de los **11 repos de Contabo** + el global quedaron normalizados a
+`28882411+3dwrd@users.noreply.github.com` (la dirección se deduce del user id de la API, no hizo
+falta copiarla a mano). De acá en adelante todo se atribuye solo, sin exponer el correo real.
+**Ya podés marcar "Block command line pushes that expose my email"** en
+`github.com/settings/emails`: los servidores ya no mandan tu correo.
+
+Pendiente menor en GitHub: tu perfil no tiene **nombre ni bio** (`name: null` en la API) y el
+LinkedIn va a enlazar ahí. Dos minutos en `github.com/settings/profile`.
+
+Pasos originales, por si hay que repetirlo en otra máquina:
 
 1. Entrá a **https://github.com/settings/emails**
 2. **Add email address** → `hersonc00@proton.me` → **Add**
