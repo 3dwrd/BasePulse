@@ -11,6 +11,14 @@ Estado al **2026-08-02, 20:25**. Marcá lo tuyo, yo marco lo mío.
 - [x] Copy de submissions lista (`docs/basedev-project-submission.md`) (yo)
 - [x] `access_log` dedicado del vhost → `/var/log/nginx/basepulse.access.log` (yo)
 - [x] 6 commits pusheados a GitHub — el repo público ya refleja el trabajo real (yo)
+- [x] Correo verificado en GitHub → 36/42 commits atribuidos; identidad git normalizada en
+      13 repos de los dos servidores (vos + yo)
+- [x] "Include private contributions" activado → la gráfica pasó de **5 a 57** contribuciones,
+      51 de repos privados, verificado desde fuera sin sesión (vos)
+- [x] Blockaid enviado por la vía Developer (vos)
+- [x] App registrada en Base Dashboard y `base:app_id` nuevo desplegado en el sitio (vos + yo)
+- [x] Falsa alarma descartada: la atribución ERC-8021 **sí llega** por los dos caminos de
+      login; el que medía mal era el verificador. Marcador real 4/5 (yo)
 
 ---
 
@@ -49,7 +57,12 @@ Pasos originales, por si hay que repetirlo en otra máquina:
 > `hersonc00@proton.me`; si la activás antes del paso 6, el próximo `git push` desde el VPS se
 > rechaza. Marcala después de que yo confirme el cambio.
 
-### 2. Blockaid — antes de mandar tráfico
+### 2. ~~Blockaid~~ — ✅ ENVIADO 2026-08-02 por la vía Developer
+
+Queda esperar respuesta. Si algún día aparece un aviso en una wallet concreta, la otra puerta
+es `https://report.blockaid.io/mistake`.
+
+Pasos originales y bloque de texto, por si hay que reenviarlo:
 
 Es lo que alimenta los avisos rojos de MetaMask y Coinbase Wallet. Base lo recomienda
 explícitamente en `docs.base.org/base-chain/security/avoid-malicious-flags`. Un visitante nuevo
@@ -107,7 +120,27 @@ Known weak signals, disclosed up front:
 Si te pide una prueba de que controlás el dominio, decime y te dejo el archivo o el meta tag
 donde lo pidan.
 
-### 3. Base.dev / dashboard.base.org — proyecto con metadata
+### 3. Base Dashboard — ⚠️ HAY DOS APPS "BasePulse" DUPLICADAS
+
+Al registrar hoy por el flujo `/register` se creó una **segunda** ficha. Ahora existen:
+
+| App | `base:app_id` | Estado |
+|---|---|---|
+| **La de hoy, CON foto** | `6a6f93a5a8c4f2b6db3b3e11` | ✅ **es la buena** — su id es el que sirve el sitio |
+| La de julio, sin foto | `6a668e04281b6db318994d46` | huérfana, ya no puede verificar el dominio |
+
+**Ya está decidido de hecho:** el meta tag del sitio se cambió al id nuevo (commit abajo), así
+que la verificación de dominio solo puede resolver a la app con foto. La vieja quedó sin forma
+de probar que controla `basepulse.botsniper.xyz`.
+
+**Acción tuya:** borrá la ficha sin foto si el dashboard te deja. Si no deja, dejala ahí — no
+estorba, pero **no la completes**, porque dos apps compitiendo por el mismo dominio es
+exactamente el tipo de señal ambigua que hace que una verificación quede colgada.
+
+**Ojo con el builder code:** es uno solo (`bc_bo6g6vzn`) y vive a nivel de cuenta, no de app.
+No hay que duplicarlo ni pedir otro.
+
+### 3b. Base.dev / dashboard.base.org — proyecto con metadata
 
 Distinto del formulario de Google que ya mandaste. Ahí ya tenés el Builder Code registrado; lo
 que falta es la **ficha del proyecto** (name, icon, tagline, description, screenshots, category,

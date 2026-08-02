@@ -3,6 +3,9 @@ packages:
   - 'packages/*'
   - 'services/*'
 allowBuilds:
+  # Its postinstall is telemetry/CLI setup, not required for the connector to work —
+  # the build that has been serving WalletConnect in production never ran it.
+  '@reown/appkit': false
   esbuild: true
   sharp: true
   unrs-resolver: true
