@@ -124,18 +124,20 @@ donde lo pidan.
 
 Al registrar hoy por el flujo `/register` se creó una **segunda** ficha. Ahora existen:
 
-| App | `base:app_id` | Estado |
-|---|---|---|
-| **La de hoy, CON foto** | `6a6f93a5a8c4f2b6db3b3e11` | ✅ **es la buena** — su id es el que sirve el sitio |
-| La de julio, sin foto | `6a668e04281b6db318994d46` | huérfana, ya no puede verificar el dominio |
+| App | `base:app_id` | Foto | Estado |
+|---|---|---|---|
+| La de hoy (`/register`) | `6a6f93a5a8c4f2b6db3b3e11` | ❌ sin foto — se saltó el paso *customize* | es la que el sitio sirve ahora |
+| La de julio | `6a668e04281b6db318994d46` | ✅ con foto | ya no puede verificar el dominio |
 
-**Ya está decidido de hecho:** el meta tag del sitio se cambió al id nuevo (commit abajo), así
-que la verificación de dominio solo puede resolver a la app con foto. La vieja quedó sin forma
-de probar que controla `basepulse.botsniper.xyz`.
+**DECIDIDO (2-ago): se queda la de hoy, `6a6f93a5a8c4f2b6db3b3e11`.** Se le sube el icono y el
+resto de la metadata, y se borra la de julio.
 
-**Acción tuya:** borrá la ficha sin foto si el dashboard te deja. Si no deja, dejala ahí — no
-estorba, pero **no la completes**, porque dos apps compitiendo por el mismo dominio es
-exactamente el tipo de señal ambigua que hace que una verificación quede colgada.
+Es la opción sin trabajo extra: el sitio **ya sirve ese id**, así que no hay que tocar código ni
+volver a desplegar antes de darle *Verify*. Lo único que le falta a esa ficha es la metadata que
+se saltó en el paso *customize*, y está toda redactada en `docs/basedev-project-submission.md`.
+
+Lo que **no** hay que hacer es completar las dos: dos apps peleando por el mismo dominio es
+justo el tipo de ambigüedad que deja una verificación colgada.
 
 **Ojo con el builder code:** es uno solo (`bc_bo6g6vzn`) y vive a nivel de cuenta, no de app.
 No hay que duplicarlo ni pedir otro.
