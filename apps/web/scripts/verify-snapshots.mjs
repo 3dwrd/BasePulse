@@ -108,7 +108,16 @@ for (const log of logs) {
   const receipt = await client.getTransactionReceipt({ hash: log.transactionHash });
   const block = await client.getBlock({ blockNumber: log.blockNumber });
 
-  const hasSuffix = tx.input.toLowerCase().endsWith(expectedSuffix);
+  // A smart wallet (Base Account) never sends the call directly: a bundler submits
+  // EntryPoint.handleOps, so our record() call — suffix and all — sits nested inside the
+  // userOp. endsWith() alone reports those as unattributed, which is wrong.
+  const input = tx.input.toLowerCase();
+  const attribution = input.endsWith(expectedSuffix)
+    ? 'direct'
+    : input.includes(expectedSuffix)
+      ? 'nested'
+      : 'missing';
+  const hasSuffix = attribution !== 'missing';
   if (hasSuffix) attributed += 1;
   wallets.add(log.args.user.toLowerCase());
 
@@ -119,9 +128,12 @@ for (const log of logs) {
   console.log(`     wallet     : ${log.args.user}`);
   console.log(`     tx         : https://basescan.org/tx/${log.transactionHash}`);
   console.log(`     estado     : ${receipt.status}   gas: ${receipt.gasUsed}`);
-  console.log(
-    `     ATRIBUCION : ${hasSuffix ? 'OK - sufijo ERC-8021 presente' : 'FALTA - sin sufijo, no cuenta para Builder Score'}`,
-  );
+  const attributionLabel = {
+    direct: 'OK - sufijo ERC-8021 al final del calldata',
+    nested: 'OK - sufijo ERC-8021 dentro del userOp (smart wallet)',
+    missing: 'FALTA - sin sufijo, no cuenta para Builder Score',
+  }[attribution];
+  console.log(`     ATRIBUCION : ${attributionLabel}`);
   console.log(`     enviada por: ${tx.from}${relayed ? '   (distinta del user -> smart wallet / relayer)' : ''}`);
   console.log('');
 }
