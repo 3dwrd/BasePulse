@@ -22,8 +22,8 @@ legitimacy signal at once — the same signal that reduces "unknown site" wallet
 | Builder Code | `bc_bo6g6vzn` |
 | Farcaster | `@usebasepulse` |
 | Contact | hersonc00@proton.me |
-| Logo | `docs/assets/dappradar/logo-250.png` (250×250 PNG, 25KB) |
-| Screenshots | `docs/assets/dappradar/screenshot-{1-home,2-score,3-gas}.png` |
+| Logo image URL | `https://basepulse.botsniper.xyz/logo-1024.png` (1024×1024 PNG — the form asks for a URL, not an upload; imgur is only a suggestion, our own domain also proves we control it) |
+| Screenshots | `docs/assets/basedev/desktop-{1-home,2-score,3-gas}.png` (recaptured 2026-08-02) |
 
 ## Short description (one line)
 
@@ -48,9 +48,8 @@ leaning on if the form has a free-text "why does this fit Base" field.
 
 ## Do before submitting
 
-1. **Post something from `@usebasepulse`.** The account exists but is empty; an ecosystem
-   listing pointing at a profile with zero posts is a weak signal. The share cards work as
-   of 27-jul, so posting a score card is a decent first post.
-2. Sanity-check the three screenshots still match the live UI — the portfolio page changed
-   on 2026-08-02 (the onchain snapshot block is new and now renders for signed-out
-   visitors), so `screenshot-1-home.png` may be stale.
+1. ~~Post something from `@usebasepulse`~~ — **done 2026-08-02**: first posts published on
+   Farcaster and on the personal X account.
+2. ~~Sanity-check the screenshots~~ — **done 2026-08-02**: recaptured from the live site into
+   `docs/assets/basedev/` (portrait + desktop). The old `docs/assets/dappradar/screenshot-*.png`
+   predate the signed-out snapshot block and the wallet search bar; prefer the new ones.
