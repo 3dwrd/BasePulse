@@ -22,11 +22,16 @@ const otherWalletConnectors = [
 ];
 
 // Real Base Builder Code (registered at dashboard.base.org), ERC-8021 attribution.
-// Set at the wagmi client level so useWriteContract/useSendTransaction/useSendCalls
-// all carry it automatically — see .agents/skills/adding-builder-codes/references/wagmi.md.
 // Unrelated to PortfolioSnapshot's own `BUILDER_CODE` bytes8 constant (a tag the
 // contract itself stores, not something Base's indexer reads).
-const BUILDER_CODE_DATA_SUFFIX = Attribution.toDataSuffix({ codes: ['bc_bo6g6vzn'] });
+//
+// WARNING: `createConfig({ dataSuffix })` below is IGNORED by @wagmi/core 3.4.12 — the key
+// exists in no runtime path and no type there. The first real mainnet snapshot
+// (0x09cb992c…2c60, block 49447791) landed with 68 bytes of calldata and no suffix at all,
+// i.e. unattributed. Callers must pass `dataSuffix` per transaction; wagmi spreads unknown
+// params into viem's writeContract → sendTransaction, which does the `concat(data, suffix)`.
+// Keep the config key for whenever wagmi supports it, but never rely on it alone.
+export const BUILDER_CODE_DATA_SUFFIX = Attribution.toDataSuffix({ codes: ['bc_bo6g6vzn'] });
 
 let sdkInstance: ReturnType<typeof createBaseAccountSDK> | null = null;
 

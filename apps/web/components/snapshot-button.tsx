@@ -9,6 +9,7 @@ import {
   PORTFOLIO_SNAPSHOT_ABI,
   portfolioSnapshotAddress,
 } from '@/lib/contracts/portfolio-snapshot';
+import { BUILDER_CODE_DATA_SUFFIX } from '@/lib/wagmi';
 
 interface Token {
   address: `0x${string}`;
@@ -77,6 +78,9 @@ export function SnapshotButton({ tokens }: Props) {
               abi: PORTFOLIO_SNAPSHOT_ABI,
               functionName: 'record',
               args: [fingerprint, BUILDER_CODE],
+              // Per-call, not from the wagmi config: @wagmi/core 3.4.12 silently drops a
+              // config-level dataSuffix, which left the first mainnet snapshot unattributed.
+              dataSuffix: BUILDER_CODE_DATA_SUFFIX,
             })
           }
           className="rounded bg-neutral-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-neutral-700 disabled:cursor-not-allowed disabled:opacity-40 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200"
