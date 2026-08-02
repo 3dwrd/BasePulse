@@ -162,6 +162,17 @@ Ver `/root/LinkedIn-Perfil.md`. Sin foto, el perfil no sale en búsquedas.
 
 ---
 
+### 6. Metadata de la app en Base Dashboard — ✅ HECHO 2026-08-02
+
+Icono, thumbnail 1.91:1 (1200×628, 21 KB) y screenshots cargados y guardados. Los assets quedan
+servidos en `https://basepulse.botsniper.xyz/press/` por si hay que volver a subirlos en otro
+formulario.
+
+**Falta confirmar una sola cosa: que el dominio quedó en *verified*.** El meta tag correcto
+(`6a668e04281b6db318994d46`) está en vivo, así que solo hay que apretar el botón si no se apretó.
+
+---
+
 ## MI LADO (dame luz verde y lo hago)
 
 - [ ] Cambiar `git config user.email` de los dos servidores a tu dirección `@users.noreply` —
