@@ -1,0 +1,134 @@
+# Checklist de lanzamiento — tu lado / mi lado
+
+Estado al **2026-08-02, 20:25**. Marcá lo tuyo, yo marco lo mío.
+
+## Hecho hoy
+
+- [x] Post #1 en Farcaster `@usebasepulse` + post #2 en X personal (vos)
+- [x] Formulario del ecosistema de Base enviado con el logo (vos)
+- [x] Logo 1024×1024 servido en `https://basepulse.botsniper.xyz/logo-1024.png` (yo)
+- [x] Screenshots frescos portrait + desktop en `docs/assets/basedev/` (yo)
+- [x] Copy de submissions lista (`docs/basedev-project-submission.md`) (yo)
+- [x] `access_log` dedicado del vhost → `/var/log/nginx/basepulse.access.log` (yo)
+- [x] 6 commits pusheados a GitHub — el repo público ya refleja el trabajo real (yo)
+
+---
+
+## TU LADO (nadie más lo puede hacer)
+
+### 1. Verificar el correo en GitHub — la de más palanca, 3 minutos
+
+**Medición de hoy: 41 commits en el repo, los 41 huérfanos** (`author: null` en la API). Tu
+gráfica de contribuciones está vacía pese a que el trabajo existe y ahora es público.
+
+1. Entrá a **https://github.com/settings/emails**
+2. **Add email address** → `hersonc00@proton.me` → **Add**
+3. GitHub manda un correo a esa dirección → abrilo → **Verify email address**
+4. Refrescá la página de Emails. Los 35 commits firmados con ese correo se atribuyen
+   **retroactivamente** (los 6 firmados como `root@vmi3158163…` no se recuperan; no vale la
+   pena reescribir historia ya pusheada por 6).
+5. En la misma página marcá **"Keep my email addresses private"** y copiá la dirección que te
+   muestra, con esta forma: `1234567+3dwrd@users.noreply.github.com`
+6. **Pasámela** y yo cambio el `git config` de los dos servidores para que de ahora en adelante
+   los commits se atribuyan sin exponer tu correo real.
+
+> ⚠️ **Gotcha:** en esa misma pantalla hay una segunda casilla, *"Block command line pushes that
+> expose my email"*. **No la marqués todavía.** Los servidores siguen firmando con
+> `hersonc00@proton.me`; si la activás antes del paso 6, el próximo `git push` desde el VPS se
+> rechaza. Marcala después de que yo confirme el cambio.
+
+### 2. Blockaid — antes de mandar tráfico
+
+Es lo que alimenta los avisos rojos de MetaMask y Coinbase Wallet. Base lo recomienda
+explícitamente en `docs.base.org/base-chain/security/avoid-malicious-flags`. Un visitante nuevo
+que ve una alarma no vuelve.
+
+1. Entrá a **https://report.blockaid.io/**
+2. Elegí la opción de **Developer / "verify a project"** (no la de reportar algo malicioso).
+   Es una app de JavaScript, no pude leer los campos exactos desde acá — pero todo lo que te
+   pueda pedir está abajo.
+3. Si en algún momento ya te aparece un aviso en una wallet concreta, esa es otra puerta:
+   **https://report.blockaid.io/mistake**
+
+**Bloque para copiar y pegar:**
+
+```
+Project name: BasePulse
+Website / domain to verify: https://basepulse.botsniper.xyz
+Chain: Base mainnet (chain id 8453)
+Contract: 0xd2240b90486F63858ED823a2620cb6DC6FcB6019 (verified on BaseScan)
+Category: Portfolio / analytics dashboard (read-only utility)
+Contact: hersonc00@proton.me
+Base Builder Code: bc_bo6g6vzn
+GitHub (public source): https://github.com/3dwrd/BasePulse
+Farcaster: @usebasepulse
+
+Description:
+BasePulse is a free, read-only utility dashboard for the Base ecosystem: token portfolio
+lookup, a gas-fee tracker with 7-day historical guidance, and an onchain reputation score
+with a breakdown of what drives it. Anyone can look up any Base address without connecting
+a wallet or creating an account. Connecting a wallet is optional and only needed to view
+your own portfolio or to record a snapshot.
+
+Risk profile:
+- The app never takes custody of funds. The single deployed contract, PortfolioSnapshot, is
+  an append-only ledger: "No funds are held; this is a pure write/append ledger."
+- There is exactly one state-changing method, record(bytes32 fingerprint, bytes8 builderCode).
+  It is not payable, takes no value and moves no tokens.
+- The app never requests a token approval. No approve, no permit, no setApprovalForAll exists
+  anywhere in the codebase.
+- Only a keccak256 hash goes onchain. No balances, no amounts, no personal data.
+- The single transaction the UI offers is fully described before signing, and the button copy
+  matches the onchain effect exactly.
+- Wallet authentication is standard SIWE — signature only, no transaction.
+- Standard connection methods offered: Base Account SDK, injected/EIP-6963 wallets, Coinbase
+  Wallet SDK and WalletConnect.
+- No geo-blocking or regional restrictions.
+- Source is public: https://github.com/3dwrd/BasePulse
+
+Known weak signals, disclosed up front:
+- The domain botsniper.xyz was registered 2026-04-15 (young) on a .xyz TLD, and BasePulse runs
+  on a subdomain alongside unrelated personal projects.
+- Usage is near zero: the app was announced publicly for the first time on 2026-08-02.
+```
+
+Si te pide una prueba de que controlás el dominio, decime y te dejo el archivo o el meta tag
+donde lo pidan.
+
+### 3. Base.dev / dashboard.base.org — proyecto con metadata
+
+Distinto del formulario de Google que ya mandaste. Ahí ya tenés el Builder Code registrado; lo
+que falta es la **ficha del proyecto** (name, icon, tagline, description, screenshots, category,
+primary URL, builder code). Es el reemplazo oficial del empaquetado mini-app y el paso 1 del
+camino de rewards. Todo el copy está en `docs/basedev-project-submission.md`.
+
+### 4. DappRadar (opcional, menor prioridad)
+
+Pide crear cuenta a mano. Borrador completo en `docs/dappradar-submission-draft.md`.
+
+### 5. Foto y nombre real en LinkedIn
+
+Ver `/root/LinkedIn-Perfil.md`. Sin foto, el perfil no sale en búsquedas.
+
+---
+
+## MI LADO (dame luz verde y lo hago)
+
+- [ ] Cambiar `git config user.email` de los dos servidores a tu dirección `@users.noreply` —
+      **necesito que me la pases** (paso 1.5 de arriba).
+- [ ] Post #4, el del bug de `dataSuffix` de wagmi: redactado en `docs/launch-posts-draft.md`.
+      Ahora que el repo es público y está al día, el claim es verificable. Es el de más
+      probabilidad de enganche real con builders de Base.
+- [ ] Medir el lanzamiento en 48–72h con el `access_log` nuevo: visitas humanas reales vs
+      escáneres, y si aparecen keys `score:*` en Redis (= alguien consultó una wallet).
+- [ ] Rotar el deployer (wallet nueva + contraseña fuerte + redeploy ~0.0000016 ETH). Sigue
+      pendiente de tu decisión, sin incendio: la wallet tiene $10.6 y 2 tx.
+- [ ] Basename/ENS en la caja de búsqueda ("fase 3", nunca aprobada).
+
+---
+
+## Cómo se mide si esto funcionó
+
+Antes del lanzamiento el marcador era: **0 usuarios, 0 keys `score:*` en Redis, 1 snapshot
+onchain (el tuyo)**. Cualquiera de estas tres moviéndose es señal real; el resto es ruido de
+escáneres. Ahora sí se puede separar por sitio gracias al `access_log` dedicado.
