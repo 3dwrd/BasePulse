@@ -129,15 +129,18 @@ Al registrar hoy por el flujo `/register` se creó una **segunda** ficha. Ahora 
 | La de hoy (`/register`) | `6a6f93a5a8c4f2b6db3b3e11` | ❌ sin foto — se saltó el paso *customize* | es la que el sitio sirve ahora |
 | La de julio | `6a668e04281b6db318994d46` | ✅ con foto | ya no puede verificar el dominio |
 
-**DECIDIDO (2-ago): se queda la de hoy, `6a6f93a5a8c4f2b6db3b3e11`.** Se le sube el icono y el
-resto de la metadata, y se borra la de julio.
+**RESUELTO (2-ago): se queda la de julio, `6a668e04281b6db318994d46`** — la que ya estaba
+confirmada y tiene foto. El sitio volvió a servir ese id (build + restart hechos, verificado en
+vivo). El id efímero `6a6f93a5a8c4f2b6db3b3e11` queda muerto: **no resucitarlo.**
 
-Es la opción sin trabajo extra: el sitio **ya sirve ese id**, así que no hay que tocar código ni
-volver a desplegar antes de darle *Verify*. Lo único que le falta a esa ficha es la metadata que
-se saltó en el paso *customize*, y está toda redactada en `docs/basedev-project-submission.md`.
+**Limitación encontrada: el dashboard no deja borrar ni editar apps.** La ficha vacía creada hoy
+se queda ahí, huérfana. No estorba —nunca va a poder verificar el dominio, porque su id ya no lo
+sirve nadie— pero tampoco se puede limpiar.
 
-Lo que **no** hay que hacer es completar las dos: dos apps peleando por el mismo dominio es
-justo el tipo de ambigüedad que deja una verificación colgada.
+**Consecuencia a resolver:** si tampoco se puede editar la ficha de julio, no hay forma de
+subirle icono/screenshots/descripción por la UI. Antes de dar esto por cerrado hay que probar:
+entrar a la ficha en sí (no a la lista), o el enlace directo `dashboard.base.org/register/customize`.
+Si ninguna funciona, es tema de soporte de Base, no algo que se arregle del lado del código.
 
 **Ojo con el builder code:** es uno solo (`bc_bo6g6vzn`) y vive a nivel de cuenta, no de app.
 No hay que duplicarlo ni pedir otro.
